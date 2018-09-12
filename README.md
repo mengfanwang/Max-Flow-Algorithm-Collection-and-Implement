@@ -9,12 +9,12 @@ This is an open-source repository used for implementing different max-flow algor
 ## Contents
 #### <a href="#Dataset">Dataset</a>
 * [Categories](#Categories)
-* [Structure and Fields](#Structure and Fields)
-* [Running Time Database](#Running Time Database)
+* [Structure and Fields](#StructureandFields)
+* [Running Time Database](#RunningTimeDatabase)
 #### <a href="#Input">Input</a>
 #### <a href="#Output">Output</a>
 #### <a href="#Algorithms and Codes">Algorithms and Codes</a>
-* [General Codes](#General Codes)
+* [General Codes](#GeneralCodes)
 
 ## <a id="Dataset"/>Dataset</a>
 [Dataset link](https://drive.google.com/drive/folders/1Pz6YEsJ8QHLzCbWa_5-ptssVO1PoRnSP?usp=sharing) is here.
@@ -45,7 +45,7 @@ Some of the graphs are from the following websites, institutes or organizations:
 
 **Some special graphs may be supplemented as new categories in the future.
 
-### <h3 id="Structure and Fields">Structure and Fields</h3>
+### <h3 id="StructureandFields">Structure and Fields</h3>
 Each graph should be saved as a Matlab structure. The structure should contain the following fields:
 #### 1. Vertices
 This is an n by 1 matrix. n is the number of vertices. Entries must be positive integers, but may not start from 1 and may not continuous. It contains the source and sink. The data type of entries can be `uint16` or `uint32` (even more in the future version), based on n.
@@ -95,7 +95,7 @@ For example, a 10000-vertices GTW graph's flag is 22334. Because it's directed, 
 Any unfixed-length string or empty. Any comments or explanation can be appended here.
 
 
-### <h3 id="Running Time Database">Running Time Database</h3>
+### <h3 id="RunningTimeDatabase">Running Time Database</h3>
 A database is used for recording the running time. It's just a reference because the running time can change when using different algorithms and devices. However, for the same algorithm, the ratio of the running times of any two graphs should be almost constant. 
 
 ## <a id="Input"/>Input</a>
@@ -166,7 +166,7 @@ Entries of this output of all algorithms should be the same if `MaxFlows` is the
 The same as `SourceCut`.
 
 ## <a id="Algorithms and Codes"/>Algorithms and Codes</a>
-### <h3 id="General Codes">General Codes</h3>
+### <h3 id="GeneralCodes">General Codes</h3>
 
 * `inputCheck.m` For checking the input is valid or not.
 * `graphGenerator.m` For generating graphs according to some requirements.
