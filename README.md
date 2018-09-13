@@ -87,7 +87,7 @@ A s by 1 matrix, representing a set of vertices connected to the source after im
 A t by 1 matrix, representing a set of vertices connected to the sink after implementing a min-cut algorithm. s+t=n.
 
 #### 10. Flag
-A 5-digital number. Each number represents the corresponding property in the former part `Categories` in order. When this part is modified, all graphs in the dataset will be modified.
+A 5-digital number. Each number represents the corresponding property in the former part `Categories` in order. When this part is modified, all graphs in the dataset will be modified. Uncertain properties can be labeled by 0.
 
 For example, a 10000-vertices GTW graph's flag is 22334. Because it's directed, m=O(n) but not planar, single float capacity, and have 10^4 vertices with infinite capacity edges.
 
