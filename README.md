@@ -1,4 +1,4 @@
-# Max-flow Algorithm Collection, Implementation, and Validation
+# Max-flow Algorithms Implementation by MATLAB
 By [Mengfan Wang](https://www.linkedin.com/in/mengfan-wang-29735314a/).
 
 Virginia Tech [Computational Bioinformatics and Bio-imaging Laboratory (CBIL)](https://www.cbil.ece.vt.edu/).
