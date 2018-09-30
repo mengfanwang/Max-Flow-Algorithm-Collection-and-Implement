@@ -6,6 +6,9 @@ import time
 import EdmondsKarp
 
 if __name__ == "__main__":
+    # It's used to implement my idea that for GTW graph, calculate the max flow of
+    # a single graph seprately and then calculate the max flow of residual graph is
+    # quicker than calculaing the max flow on the whole graph directly.
 
     # change the path to where the script located
     os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
@@ -21,11 +24,12 @@ if __name__ == "__main__":
     runningTimeOrgin = data['time'].value[0, 0]
     print(maxValueOrgin)
 
-    
-    graph = EdmondsKarp.EdmondsKarp(edge, source, sink)
-    tic = time.time()
-    maxValue = graph.maxflow()
-    runningTime = time.time() - tic
+    localS = pd.DataFrame(data['local/s'].value.T)
+    localT = pd.DataFrame(data['local/t'].value.T)
+    localW = pd.DataFrame(data['local/w'].value.T)
 
-    print(maxValue, maxValueOrgin, maxValue-maxValueOrgin)
-    print(runningTime, runningTimeOrgin)
+    for ind in localS.T.index:
+        edge = pd.DataFrame({'start': localS[ind], 'end': localT[ind], 'weight': localW[ind]})
+        print(1)
+
+    print(1)
