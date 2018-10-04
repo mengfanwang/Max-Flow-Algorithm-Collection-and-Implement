@@ -1,10 +1,10 @@
 import pandas as pd
 import numpy as np
 
-class EdmondsKarp:
-    ## This algorithm is using BFS to find the augmenting paths and accomplish the calculation
-    ## Input should be simple graph without duplicated edges, loops, and the label of nodes should
-    ## be continous. The last two nodes should be the source and sink.
+class AugmentDFS:
+    # This algorithm is using DFS to find the augmenting paths and accomplish the calculation
+    # Input should be simple graph without duplicated edges, loops, and the label of nodes should
+    # be continous. The last two nodes should be the source and sink.
 
     # initialize edge, source and sink
     # edge is a n*3 dataframe. n is the number of edges. One edge and its reversed edge should occur together.
@@ -12,17 +12,16 @@ class EdmondsKarp:
         self.edge = edge
         self.edge['start'] = self.edge['start'].astype('int32')
         self.edge['end'] = self.edge['end'].astype('int32')
-        self.s = np.int32(source)
+        self.s = np.int32(source) 
         # sink is the last node all the time
         self.t = np.int32(sink)
 
-    # use BFS to find a augument path
-    def BFS(self, residual):
+    def DFS(self, residual):
         # visited is to show a node can be achieved or not, and wait is used for nodes may be achieved.
         # parentPath shows the path from parent to the node after BFS
         visited = [False] * (self.t+1)
-        wait = []
         parentPath = -1*np.int32(np.ones(self.t+1))
+        wait = []         
 
         # start from source
         visited[self.s] = True
@@ -30,7 +29,7 @@ class EdmondsKarp:
 
         # loop
         while wait:
-            parentNode = wait.pop(0)
+            parentNode = wait.pop()
             for ind in self.edge[self.edge.start == parentNode].index:
                 node = self.edge.end[ind]
                 if (visited[node] == False) and (residual[ind]) > 0:
@@ -44,16 +43,17 @@ class EdmondsKarp:
     def maxflow(self):
         # main function
         maxValue = 0
-        count = -1 # the number of augmenting path
+        count = -1  # the number of augmenting path
         
+
         residual = self.edge.weight.copy()
         maxFlow = self.edge.weight.copy()
         maxFlow[:] = 0
 
         while True:
 
-            flag, parentPath = self.BFS(residual)
-            count = count + 1 
+            flag, parentPath = self.DFS(residual)
+            count = count + 1
             if not flag:
                 break    # same to loop until
 
@@ -81,6 +81,5 @@ class EdmondsKarp:
                 node = self.edge.start[path]
                 if node == self.s:
                     break
+        return maxValue, maxFlow, count
 
-
-        return maxValue, maxFlow, count 
