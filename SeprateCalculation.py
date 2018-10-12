@@ -4,9 +4,8 @@ import h5py
 import pandas as pd
 import numpy as np
 import time
-import EdmondsKarp2
 import Validation
-import AugmentDFS
+import Dinic2
 
 if __name__ == "__main__":
     # It's used to implement my idea that for GTW graph, calculate the max flow of
@@ -20,7 +19,7 @@ if __name__ == "__main__":
     # data = h5py.File(
     #     'GTW dataset/2-2-2-K2.h5', 'r')
     data = h5py.File(
-        'GTW dataset/6-10-4/6-10-4-K0.h5', 'r')
+        'GTW dataset/9-15-10/9-15-10-KInf.h5', 'r')   
     source1 = data['s1'].value[0, 0]
     sink1 = data['t1'].value[0, 0]
     source2 = data['s2'].value[0, 0]
@@ -41,12 +40,12 @@ if __name__ == "__main__":
     maxFlow_single = np.zeros([num_SingleEdge,n])
     maxValue = 0
 
-    tic = time.time()
+    
     # single graph maxflow calculation
     for ind in localW.T.index:
         edge = pd.DataFrame({'start': localS[0], 'end': localT[0], 'weight': localW[ind]})
-        graph = EdmondsKarp2.EdmondsKarp2(edge, source1, sink1)
-        maxValue_single, maxFlow_single[:,ind], count = graph.maxflow()
+        graph = Dinic2.Dinic(edge, source1, sink1)
+        maxValue_single, maxFlow_single[:,ind],count = graph.maxflow()
         maxValue += maxValue_single
     initialFlow = np.vstack((np.reshape(maxFlow_single.T,[num_SingleEdge*n, 1]),np.zeros([num_Point*num_WholeEdge*2, 1])))
     
@@ -62,9 +61,10 @@ if __name__ == "__main__":
             residualFlow[ind-1] += initialFlow[ind]
 
     edge = pd.DataFrame({'start': data['whole'].value[0,:].T, 'end': data['whole'].value[1,:].T, 'weight': residualFlow})
-    graph = AugmentDFS.AugmentDFS(edge, source2, sink2)
+    graph = Dinic2.Dinic(edge, source2, sink2)
     
-    maxValue_whole, maxFlow_whole, count = graph.maxflow()
+    tic = time.time()
+    maxValue_whole, maxFlow_whole,count = graph.maxflow()
     runningTime = time.time() - tic
     maxValue += maxValue_whole
     maxFlow = initialFlow + np.transpose([maxFlow_whole.values])
@@ -90,11 +90,12 @@ if __name__ == "__main__":
     maxFlow = pd.Series(maxFlow.T[0])
 
     print('running time:',runningTime,'orgin running time', runningTimeOrgin)
+    print('Augmenting paths:',count)
 
     # For validation
     edge = pd.DataFrame(data['whole'].value.T, columns=[
         'start', 'end', 'weight'])
-    graph = AugmentDFS.AugmentDFS(edge, source2, sink2)
+    graph = Dinic2.Dinic(edge, source2, sink2)
     Validation.validate(graph,maxFlow,maxValue,maxValueOrgin,np.int32(data['sCut'].value[0]))
 
     input()
