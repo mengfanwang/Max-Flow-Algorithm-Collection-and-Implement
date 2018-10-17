@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import time
 import Validation
-import Dinic2
+import BoykovKolmogorov
 
 if __name__ == "__main__":
     # It's used to implement my idea that for GTW graph, calculate the max flow of
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # data = h5py.File(
     #     'GTW dataset/2-2-2-K2.h5', 'r')
     data = h5py.File(
-        'GTW dataset/9-15-10/9-15-10-KInf.h5', 'r')   
+        'GTW dataset/6-10-4/6-10-4-K10.h5', 'r')   
     source1 = data['s1'].value[0, 0]
     sink1 = data['t1'].value[0, 0]
     source2 = data['s2'].value[0, 0]
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     # single graph maxflow calculation
     for ind in localW.T.index:
         edge = pd.DataFrame({'start': localS[0], 'end': localT[0], 'weight': localW[ind]})
-        graph = Dinic2.Dinic(edge, source1, sink1)
+        graph = BoykovKolmogorov.BoykovKolmogorov(edge, source1, sink1)
         maxValue_single, maxFlow_single[:,ind],count = graph.maxflow()
         maxValue += maxValue_single
     initialFlow = np.vstack((np.reshape(maxFlow_single.T,[num_SingleEdge*n, 1]),np.zeros([num_Point*num_WholeEdge*2, 1])))
@@ -61,7 +61,7 @@ if __name__ == "__main__":
             residualFlow[ind-1] += initialFlow[ind]
 
     edge = pd.DataFrame({'start': data['whole'].value[0,:].T, 'end': data['whole'].value[1,:].T, 'weight': residualFlow})
-    graph = Dinic2.Dinic(edge, source2, sink2)
+    graph = BoykovKolmogorov.BoykovKolmogorov(edge, source2, sink2)
     
     tic = time.time()
     maxValue_whole, maxFlow_whole,count = graph.maxflow()
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # For validation
     edge = pd.DataFrame(data['whole'].value.T, columns=[
         'start', 'end', 'weight'])
-    graph = Dinic2.Dinic(edge, source2, sink2)
+    graph = BoykovKolmogorov.BoykovKolmogorov(edge, source2, sink2)
     Validation.validate(graph,maxFlow,maxValue,maxValueOrgin,np.int32(data['sCut'].value[0]))
 
     input()
