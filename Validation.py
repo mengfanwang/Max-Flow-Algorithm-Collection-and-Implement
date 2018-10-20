@@ -76,5 +76,7 @@ def validate(graph, flow, value, maxValue, sCut):
 
     if flag_zero and flag_capacity and flag_io and flag_st and cut == set(sCut):
         print('All conditions are statisfied! Congratulations!')
+        return True
     else:
         print('Some condtions are wrong. Please check again.')  
+        return False

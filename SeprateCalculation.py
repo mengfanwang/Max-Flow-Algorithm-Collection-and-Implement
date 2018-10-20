@@ -19,7 +19,7 @@ if __name__ == "__main__":
     # data = h5py.File(
     #     'GTW dataset/2-2-2-K2.h5', 'r')
     data = h5py.File(
-        'GTW dataset/6-10-4/6-10-4-K10.h5', 'r')   
+        'GTW dataset/30-50-20/30-50-20-K30.h5', 'r')   
     source1 = data['s1'].value[0, 0]
     sink1 = data['t1'].value[0, 0]
     source2 = data['s2'].value[0, 0]
