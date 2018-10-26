@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import time
 import Validation
-import BoykovKolmogorov
+import IBFS
 
 if __name__ == "__main__":
     # It's used to implement my idea that for GTW graph, calculate the max flow of
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     os.chdir(os.path.abspath(os.path.dirname(sys.argv[0]))) 
 
     # read data
-    filename = 'GTW dataset/30-50-10/30-50-10-K'
+    filename = 'GTW dataset/30-50-5/30-50-5-K'
     smooth = ['10','20','30','40','50','100','1000','10000','Inf']
     txtname = 'seperateCalculate_result.txt'
     txt = open(txtname, "w")
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         # single graph maxflow calculation
         for ind in localW.T.index:
             edge = pd.DataFrame({'start': localS[0], 'end': localT[0], 'weight': localW[ind]})
-            graph = BoykovKolmogorov.BoykovKolmogorov(edge, source1, sink1)
+            graph = IBFS.IBFS(edge, source1, sink1)
             maxValue_single, maxFlow_single[:,ind],count = graph.maxflow()
             maxValue += maxValue_single
         initialFlow = np.vstack((np.reshape(maxFlow_single.T,[num_SingleEdge*n, 1]),np.zeros([num_Point*num_WholeEdge*2, 1])))
@@ -63,7 +63,7 @@ if __name__ == "__main__":
                 residualFlow[ind-1] += initialFlow[ind]
 
         edge = pd.DataFrame({'start': data['whole'].value[0,:].T, 'end': data['whole'].value[1,:].T, 'weight': residualFlow})
-        graph = BoykovKolmogorov.BoykovKolmogorov(edge, source2, sink2)
+        graph = IBFS.IBFS(edge, source2, sink2)
         
         tic = time.time()
         maxValue_whole, maxFlow_whole,count = graph.maxflow()
@@ -97,7 +97,7 @@ if __name__ == "__main__":
         # For validation
         edge = pd.DataFrame(data['whole'].value.T, columns=[
             'start', 'end', 'weight'])
-        graph = BoykovKolmogorov.BoykovKolmogorov(edge, source2, sink2)
+        graph = IBFS.IBFS(edge, source2, sink2)
         result = Validation.validate(graph,maxFlow,maxValue,maxValueOrgin,np.int32(data['sCut'].value[0]))
         if result:
             txt.write(filename+smooth_ind+'        '+str(runningTime)+'         '+str(runningTimeOrgin)+'\n')

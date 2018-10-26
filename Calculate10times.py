@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import time
 import Validation
-import BoykovKolmogorov
+import IBFS
 
 
 if __name__ == "__main__":
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 
     # read data
-    filename = 'GTW dataset/30-50-10/30-50-10-K'
+    filename = 'GTW dataset/30-50-5/30-50-5-K'
     smooth = ['10','20','30','40','50','100','1000','10000','Inf']
     txtname = 'calculate_result.txt'
     txt = open(txtname, "w")
@@ -29,7 +29,7 @@ if __name__ == "__main__":
         print(maxValueOrgin)
 
         # build graph and calculate
-        graph = BoykovKolmogorov.BoykovKolmogorov(edge, source, sink)
+        graph = IBFS.IBFS(edge, source, sink)
         tic = time.time()
         maxValue, maxFlow, count = graph.maxflow()
         runningTime = time.time() - tic
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         if result:
             txt.write(filename+smooth_ind+'         '+str(runningTime)+'         '+str(runningTimeOrgin)+'\n')
         else:
-            txt.write(filename+smooth_ind+'       '+'Something is incorrect.\n')
+            txt.write(filename+smooth_ind+'         '+'Something is incorrect.\n')
     txt.close()
     print('Finished!')
     input()

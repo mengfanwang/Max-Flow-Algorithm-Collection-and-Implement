@@ -50,8 +50,8 @@ def validate(graph, flow, value, maxValue, sCut):
 
     # 4. soruce flow = sink flow = max flow
     flag_st = True
-    flow_source = sum(flow[graph.edge.start == graph.s])
-    flow_sink = sum(flow[graph.edge.end == graph.t])
+    flow_source = sum(flow[graph.edge.start == graph.s]) - sum(flow[graph.edge.end == graph.s])
+    flow_sink = sum(flow[graph.edge.end == graph.t]) - sum(flow[graph.edge.start == graph.t])
     if abs(flow_source - maxValue) > error:
         flag_st = False
     if abs(flow_sink - maxValue) > error:

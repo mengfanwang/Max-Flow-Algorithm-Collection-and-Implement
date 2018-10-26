@@ -51,7 +51,7 @@ class Dinic:
         # loop
         while wait:
             parentNode = wait.pop()
-            for ind in self.edge[(self.edge.start == parentNode)&(self.edge.index<=cur[parentNode])].index: #
+            for ind in self.edge[(self.edge.start == parentNode)&(self.edge.index<=cur[parentNode])].index: 
                 node = self.edge.end[ind]
                 if (visited[node] == False) and (residual[ind] > 0) and (level[node] == level[parentNode] + 1):
                     wait.append(node)
